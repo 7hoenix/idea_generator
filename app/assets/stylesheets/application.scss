@@ -1,0 +1,9 @@
+@import "materialize/components/color";
+$primary-color: #e2643a;
+@import "materialize";
+@import "style";
+
+body {
+  color: black;
+  background-color: white;
+}
