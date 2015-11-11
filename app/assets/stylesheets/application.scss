@@ -2,7 +2,7 @@
 $primary-color: #e2643a;
 @import "materialize";
 @import "style";
-
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 $duckett-blue: #00aeef;
 $duckett-gray: #bbb3af;
@@ -10,10 +10,9 @@ $duckett-gray: #bbb3af;
 $lofi-pink: #e5656e;
 $lofi-blue: #72bfe3;
 
-// body {
-//   color: black;
-//   background-color: white;
-// }
+body {
+  font-family: 'Open Sans', sans-serif;
+}
 
 .nav {
   background-color: $duckett-blue;
@@ -24,10 +23,18 @@ $lofi-blue: #72bfe3;
 }
 
 #dashboard-body {
-  background: image-url("venn_diagram_2.png") no-repeat center;
+  background: image-url("venn_basic.png") no-repeat center;
   max-height: 600px;
 }
 
 .dashboard-card-vertical {
-  margin-top: 200px;
+  margin-top: 10em;
+}
+
+#dashboard-combined {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dashboard-possibility-button {
+  margin-bottom: 0.5em;
 }
