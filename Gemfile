@@ -9,8 +9,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem "bootstrap-sass"
-gem "bootstrap_form"
+gem 'bootstrap-sass'
+gem 'bootstrap_form'
 gem 'responders'
 gem 'faker'
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
