@@ -3,7 +3,31 @@ $primary-color: #e2643a;
 @import "materialize";
 @import "style";
 
-body {
-  color: black;
-  background-color: white;
+
+$duckett-blue: #00aeef;
+$duckett-gray: #bbb3af;
+
+$lofi-pink: #e5656e;
+$lofi-blue: #72bfe3;
+
+// body {
+//   color: black;
+//   background-color: white;
+// }
+
+.nav {
+  background-color: $duckett-blue;
+}
+
+.footer {
+  background-color: $duckett-gray;
+}
+
+#dashboard-body {
+  background: image-url("venn_diagram_2.png") no-repeat center;
+  max-height: 600px;
+}
+
+.dashboard-card-vertical {
+  margin-top: 200px;
 }
