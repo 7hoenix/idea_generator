@@ -20,15 +20,4 @@
 
 $(document).ready(function() {
     $('select').material_select();
-    // $('#dashboard-combined').textfill({
-    //     // ...options...
-    //     // maxFontPixels: 36
-    //     success: function() {
-    //         alert('yuuuup!')
-    //         // console.log("yay!")
-    //     },
-    //     fail: function() {
-    //         alert("boo hoo!")
-    //     }
-    // });
 });
