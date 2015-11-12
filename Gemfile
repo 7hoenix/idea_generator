@@ -15,6 +15,7 @@ gem 'faker'
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'react-rails'
 gem 'materialize-sass'
+gem 'figaro'
 
 group :development, :test do
   gem 'pry-rails'
