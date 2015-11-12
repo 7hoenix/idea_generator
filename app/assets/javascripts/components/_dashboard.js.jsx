@@ -22,7 +22,7 @@ var Dashboard = React.createClass({
     $.ajax({
       url: "/api/v1/possibilities.json",
       type: "GET",
-      data: { requested_type: "business" },
+      data: { idea_type: "business" },
       success: function(response) {
         this.setState({possibilities: response});
         this.setLeftPossibility();
