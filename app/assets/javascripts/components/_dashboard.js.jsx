@@ -3,14 +3,7 @@ var Dashboard = React.createClass({
     return {requested_type: requested_type, possibilities: [], left: [], right: []}
   },
   componentDidMount: function() {
-    $.ajax({
-      url: "/api/v1/possibilities.json",
-      type: "GET",
-      data: { requested_type: "business" },
-      success: function(response) {
-        this.setState({possibilities: response, left: response[0], right: response[1]});
-      }.bind(this)
-    });
+    this.setBothPossibilities();
   },
   nextPossibility: function() {
     var tempPossibilities = this.state.possibilities
@@ -18,28 +11,36 @@ var Dashboard = React.createClass({
     this.setState({possibilities: tempPossibilities});
     return possibility;
   },
-  changeLeftPossibility: function() {
+  setLeftPossibility: function() {
     console.log("I'm back to the truth");
     this.setState({left: this.nextPossibility()});
   },
-  changeRightPossibility: function() {
+  setRightPossibility: function() {
     this.setState({right: this.nextPossibility()});
   },
-  changeBothPossibilities: function() {
-    this.setState({left: this.nextPossibility()});
-    this.setState({right: this.nextPossibility()});
+  setBothPossibilities: function() {
+    $.ajax({
+      url: "/api/v1/possibilities.json",
+      type: "GET",
+      data: { requested_type: "business" },
+      success: function(response) {
+        this.setState({possibilities: response});
+        this.setLeftPossibility();
+        this.setRightPossibility();
+      }.bind(this)
+    });
   },
   render: function() {
     return (
       <div className="section" id="dashboard-body">
         <div className="row center dashboard-card-vertical">
-           <Left possibility={this.state.left} newLeftPossibility={this.changeLeftPossibility} />
-           <Right possibility={this.state.right} newRightPossibility={this.changeRightPossibility} />
+           <Left possibility={this.state.left} setLeftPossibility={this.setLeftPossibility} />
+           <Right possibility={this.state.right} setRightPossibility={this.setRightPossibility} />
          <div className="col s2">
          </div>
        </div>
        <br/>
-        <Composite left={this.state.left} right={this.state.right} changeBothPossibilities={this.changeBothPossibilities} />
+        <Composite left={this.state.left} right={this.state.right} startOver={this.setBothPossibilities} />
       </div>
     )
   }
@@ -47,7 +48,7 @@ var Dashboard = React.createClass({
 
 var Left = React.createClass({
   handleChangeLeft: function() {
-    this.props.newLeftPossibility();
+    this.props.setLeftPossibility();
   },
   render: function() {
     console.log(this.props.possibility);
@@ -75,7 +76,7 @@ var Left = React.createClass({
 
 var Right = React.createClass({
   handleChangeRight: function() {
-    this.props.newRightPossibility();
+    this.props.setRightPossibility();
   },
   render: function() {
     return (
@@ -103,7 +104,7 @@ var Right = React.createClass({
 
 var Composite = React.createClass({
   handleChangeBothPossibilities: function() {
-    this.props.changeBothPossibilities();
+    this.props.startOver();
   },
   render: function() {
     return (
