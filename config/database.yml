@@ -81,5 +81,3 @@ test:
 production:
   <<: *default
   database: idea_generator_production
-  username: idea_generator
-  password: <%= ENV['IDEA_GENERATOR_DATABASE_PASSWORD'] %>
