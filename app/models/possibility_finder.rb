@@ -3,12 +3,11 @@ class PossibilityFinder
 
   def initialize(idea_type)
     @idea_type = idea_type
-    @raw_possibilities = {}
   end
 
   def possibilities
-    # prepare(raw_possibilities)
-    raw_possibilities
+    prepare_all
+    #raw_possibilities
     binding.pry
 
     # possibilities = []
@@ -22,24 +21,29 @@ class PossibilityFinder
     # possibilities
   end
 
-  private
-  attr_accessor :raw_possibilities
-
   def raw_possibilities
-    services.each do |service|
-      @raw_possibilities = @raw_possibilities.merge(service.raw_possibilities)
+    if @raw_possibilities
+      @raw_possibilities
+    else
+      @raw_possibilities = {}
+      services.each do |service|
+        @raw_possibilities = @raw_possibilities.merge(service.raw_possibilities)
+        @raw_possibilities.each_value { |content| content.downcase! }
+      end
     end
-    @raw_possibilities
   end
+
+  private
 
   def services
     ServicesFinder.new(idea_type).services
   end
 
-  def prepare(raw)
-    binding.pry
-    [Protector.new, Cleaner.new, Creator.new].each do |worker|
-      worker.send(:prepare, self)
+  def prepare_all
+    raw_possibilities
+    [WhiteList].each do |worker|
+    # [WhiteList, BlackList, Creator].each do |worker|
+      @raw_possibilities = worker.new(self).prepare
     end
   end
 end
