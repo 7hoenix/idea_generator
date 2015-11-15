@@ -4,7 +4,7 @@ class BlackList
 
   def initialize(finder)
     @finder = finder
-    @black_list = ["it", "and", "the"]
+    @black_list = ["it", "and", "the", "on", "of"]
   end
 
   def prepare

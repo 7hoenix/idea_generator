@@ -7,18 +7,6 @@ class PossibilityFinder
 
   def possibilities
     prepare_all
-    #raw_possibilities
-    binding.pry
-
-    # possibilities = []
-    # possibilities << Possibility.create(title: "wonder", source: "twitter")
-    # possibilities << Possibility.create(title: "woman", source: "producthunt")
-    # possibilities << Possibility.create(title: "water", source: "twitter")
-    # possibilities << Possibility.create(title: "people carrying sticks", source: "producthunt")
-    # possibilities << Possibility.create(title: "inner-city", source: "producthunt")
-    # possibilities << Possibility.create(title: "yolo", source: "twitter")
-    # possibilities << Possibility.create(title: "Cards Against Humanity", source: "producthunt")
-    # possibilities
   end
 
   def raw_possibilities
@@ -41,9 +29,9 @@ class PossibilityFinder
 
   def prepare_all
     raw_possibilities
-    [WhiteList].each do |worker|
-    # [WhiteList, BlackList, Creator].each do |worker|
+    [WhiteList, BlackList, Creator].each do |worker|
       @raw_possibilities = worker.new(self).prepare
     end
+    @raw_possibilities
   end
 end
