@@ -5,6 +5,10 @@ class SiteController < ApplicationController
   def dashboard
   end
 
+  def create
+    binding.pry
+  end
+
   def profile
     @ideas = [["water chestnuts"], ["Christmas present"], ["inner city water"]]
   end
