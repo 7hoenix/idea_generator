@@ -17,6 +17,7 @@ gem 'react-rails'
 gem 'materialize-sass'
 gem 'figaro'
 gem 'hurley'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'pry-rails'

@@ -6,6 +6,6 @@ class ServicesFinder
   end
 
   def services
-    [Services::TwitterService.new, Services::ProductHuntService.new]
+    [Services::BusinessUSAService.new, Services::ProductHuntService.new]
   end
 end

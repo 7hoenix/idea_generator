@@ -32,6 +32,6 @@ class PossibilityFinder
     [WhiteList, BlackList, Creator].each do |worker|
       @raw_possibilities = worker.new(self).prepare
     end
-    @raw_possibilities
+    @raw_possibilities.shuffle
   end
 end

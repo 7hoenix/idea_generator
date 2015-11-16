@@ -123,7 +123,7 @@ var Composite = React.createClass({
                   replay
                   </i>Try again
           </button>
-          <a className="waves-effect waves-light light-blue btn"><i className="material-icons left">done</i>Save Idea</a>
+          <a href="/auth/twitter" className="waves-effect waves-light light-blue btn"><i className="material-icons left">done</i>Save Idea</a>
         </div>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/>
       </div>
