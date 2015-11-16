@@ -17,6 +17,7 @@ gem 'react-rails'
 gem 'materialize-sass'
 gem 'figaro'
 gem 'hurley'
+gem 'twitter'
 
 group :development, :test do
   gem 'pry-rails'
