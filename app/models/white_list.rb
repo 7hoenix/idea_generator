@@ -1,11 +1,12 @@
-class WhiteList
-  attr_reader :finder,
-    :white_listed_phrases
+class WhiteList < Global::WhiteList
+  attr_reader :finder
 
   def initialize(finder)
     @finder = finder
-    @white_listed_phrases = ["test driven development", "internet of things", "ruby
-      on rails", "black friday"]
+  end
+
+  def white_list
+    @white_list ||= super + ["sugary"]
   end
 
   def prepare
@@ -13,7 +14,7 @@ class WhiteList
     white_listed_possibilities = {}
     raw.each do |source, content|
       possibles = []
-      white_listed_phrases.each do |white_phrase|
+      white_list.each do |white_phrase|
         if content.include?(white_phrase)
           content.gsub!(white_phrase, "")
           possibles << white_phrase
