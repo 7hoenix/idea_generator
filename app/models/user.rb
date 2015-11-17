@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :ideas
+  has_many :lists
+
   def service
     @service ||= TwitterService.new(self)
   end
