@@ -18,6 +18,7 @@ gem 'materialize-sass'
 gem 'figaro'
 gem 'hurley'
 gem 'omniauth-twitter'
+gem 'twitter'
 
 group :development, :test do
   gem 'pry-rails'
@@ -36,5 +37,7 @@ group :development do
 end
 
 group :test do
-  gem 'simplecov', :require => false
+  gem "vcr"
+  gem "webmock"
+  gem "simplecov", require: false
 end

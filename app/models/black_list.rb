@@ -1,10 +1,12 @@
-class BlackList
-  attr_reader :finder,
-    :black_list
+class BlackList < Global::BlackList
+  attr_reader :finder
 
   def initialize(finder)
     @finder = finder
-    @black_list = ["it", "and", "the", "on", "of"]
+  end
+
+  def black_list
+    @black_list ||= super + ["cakey"]
   end
 
   def prepare

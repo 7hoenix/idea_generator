@@ -10,7 +10,7 @@ class Creator
     possibles = []
     raw.each do |source, content|
       content.each do |phrase|
-        possibles << Possibility.new(source: source, title: phrase)
+        possibles << Possibility.find_or_create_by(source: source, title: phrase)
       end
     end
     possibles
