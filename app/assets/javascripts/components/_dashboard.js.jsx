@@ -12,7 +12,6 @@ var Dashboard = React.createClass({
     return possibility;
   },
   setLeftPossibility: function() {
-    console.log("I'm back to the truth");
     this.setState({left: this.nextPossibility()});
   },
   setRightPossibility: function() {
@@ -30,12 +29,31 @@ var Dashboard = React.createClass({
       }.bind(this)
     });
   },
+  blackListLeft: function(possibility_id) {
+    this.blackList(possibility_id);
+    this.setLeftPossibility();
+  },
+  blackListRight: function(possibility_id) {
+    this.blackList(possibility_id);
+    this.setRightPossibility();
+  },
+  blackList: function(possibility_id) {
+    console.log(possibility_id);
+    $.ajax({
+      url: "/api/v1/lists.json",
+      type: "POST",
+      data: { possibility: {possibility_id: possibility_id, type: "black" } },
+      success: function(response) {
+        console.log("cake");
+      }.bind(this)
+    });
+  },
   render: function() {
     return (
       <div className="section" id="dashboard-body">
         <div className="row center dashboard-card-vertical">
-           <Left possibility={this.state.left} setLeftPossibility={this.setLeftPossibility} />
-           <Right possibility={this.state.right} setRightPossibility={this.setRightPossibility} />
+           <Left possibility={this.state.left} setLeftPossibility={this.setLeftPossibility} blackListLeft={this.blackListLeft} />
+           <Right possibility={this.state.right} setRightPossibility={this.setRightPossibility} blackListRight={this.blackListRight} />
          <div className="col s2">
          </div>
        </div>
@@ -50,13 +68,19 @@ var Left = React.createClass({
   handleChangeLeft: function() {
     this.props.setLeftPossibility();
   },
+  handleBlackListLeft: function(event) {
+    event.preventDefault();
+    var possibility = React.findDOMNode(this.refs.possibilityTitle).id
+
+    this.props.blackListLeft(possibility);
+  },
   render: function() {
     console.log(this.props.possibility);
      return (
        <div className="left-possibility">
          <div className="col s3 offset-s2 left-possibility">
            <div className="card-content white-text">
-             <h3>{this.props.possibility.title}</h3>
+             <h3 ref="possibilityTitle" id={this.props.possibility.id}>{this.props.possibility.title}</h3>
              <p>Source: {this.props.possibility.source}</p>
            </div>
            <div className="card-action">
@@ -66,7 +90,15 @@ var Left = React.createClass({
                     <i className="material-icons left"> replay </i>
                     New possibility
             </button>
-            <a className="waves-effect waves-light light-blue btn"><i className="material-icons left">thumb_down</i>Blacklist</a>
+            <button className="waves-effect waves-light light-blue btn"
+              id="black-list-left"
+              onClick={this.handleBlackListLeft}
+              value={this.props.possibility}
+              >
+              <i className="material-icons left"
+              > thumb_down</i>
+              Blacklist
+              </button>
            </div>
          </div>
        </div>
@@ -78,23 +110,36 @@ var Right = React.createClass({
   handleChangeRight: function() {
     this.props.setRightPossibility();
   },
+  handleBlackListRight: function(event) {
+    event.preventDefault();
+    var possibility = React.findDOMNode(this.refs.possibilityTitle).id
+
+    this.props.blackListRight(possibility);
+  },
   render: function() {
     return (
       <div className="right-possibility">
          <div className="col offset-s2 s3">
            <div className="card-content white-text">
-             <h3>{this.props.possibility.title}</h3>
+             <h3 ref="possibilityTitle" id={this.props.possibility.id}>{this.props.possibility.title}</h3>
              <p>Source: {this.props.possibility.source}</p>
            </div>
            <div className="card-action">
             <button className="waves-effect waves-light light-blue btn dashboard-possibility-button"
                     id="new-possibility-right"
-                    onClick={this.handleChangeRight}>
+                    onClick={this.handleChangeRight}
+                    value={this.props.possibility}
+                    >
                     <i className="material-icons left">
                     replay
                     </i>New possibility
             </button>
-            <a className="waves-effect waves-light light-blue btn"><i className="material-icons left">thumb_down</i>Blacklist</a>
+            <button className="waves-effect waves-light light-blue btn"
+              id="black-list-right"
+              onClick={this.handleBlackListRight}>
+              <i className="material-icons left">thumb_down</i>
+              Blacklist
+              </button>
            </div>
          </div>
        </div>
