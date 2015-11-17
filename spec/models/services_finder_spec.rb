@@ -8,7 +8,7 @@ RSpec.describe ServicesFinder do
       collection = finder.services
 
       expect(collection.count).to eq(2)
-      expect(collection.first.class).to eq(Services::TwitterService)
+      expect(collection.first.class).to eq(Services::BusinessUSAService)
     end
   end
 end
