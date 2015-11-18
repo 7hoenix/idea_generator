@@ -28,15 +28,12 @@ var Landing = React.createClass({
 
 var OptionSelect = React.createClass({
   handleOptionSubmit: function() {
-    var ideaType = (React.findDOMNode(this.refs.type).value.trim());
-    debugger;
-    console.log(idea_type)
-
-    this.props.optionSubmit(ideaType);
+    window.location.replace("/dashboard");
   },
   render: function() {
      return (
 
+<div className="big-div">
 
       <div className="input-field offset-s2 col s8">
          <select>
@@ -46,12 +43,13 @@ var OptionSelect = React.createClass({
          </select>
         <label>We pull ideas from top trending websites and mash them together.</label>
          <button className="btn waves-effect waves-light"
-                onClick={this.handleOptionSubmit}
-                 name="action"
-                 value={this.selected}>
+                 onClick={this.handleOptionSubmit}
+                 value={$("input.select-dropdown").val()}
+                 name="action">
                  Go
            <i className="material-icons right">send</i>
           </button>
+       </div>
        </div>
      )
    }
