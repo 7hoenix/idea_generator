@@ -3,7 +3,7 @@ var Dashboard = React.createClass({
     return {requested_type: requested_type, possibilities: [], left: [], right: []}
   },
   componentDidMount: function() {
-    this.setBothPossibilities();
+      this.setBothPossibilities();
   },
   nextPossibility: function() {
     var tempPossibilities = this.state.possibilities
@@ -48,12 +48,38 @@ var Dashboard = React.createClass({
       }.bind(this)
     });
   },
+  leftSpinner: function() {
+        <div className="preloader-wrapper big active">
+     <div className="spinner-layer spinner-blue-only">
+       <div className="circle-clipper left">
+         <div className="circle"></div>
+       </div><div className="gap-patch">
+         <div className="circle"></div>
+       </div><div className="circle-clipper right">
+         <div className="circle"></div>
+       </div>
+     </div>
+    </div>
+  },
+  rightSpinner: function() {
+        <div className="preloader-wrapper big active">
+     <div className="spinner-layer spinner-blue-only">
+       <div className="circle-clipper left">
+         <div className="circle"></div>
+       </div><div className="gap-patch">
+         <div className="circle"></div>
+       </div><div className="circle-clipper right">
+         <div className="circle"></div>
+       </div>
+     </div>
+    </div>
+  },
   render: function() {
     return (
       <div className="section" id="dashboard-body">
         <div className="row center dashboard-card-vertical">
-           <Left possibility={this.state.left} setLeftPossibility={this.setLeftPossibility} blackListLeft={this.blackListLeft} />
-           <Right possibility={this.state.right} setRightPossibility={this.setRightPossibility} blackListRight={this.blackListRight} />
+           <Left possibility={this.state.left} leftSpinner={this.state.leftSpinner} setLeftPossibility={this.setLeftPossibility} blackListLeft={this.blackListLeft} />
+           <Right possibility={this.state.right} rightSpinner={this.state.rightSpinner} setRightPossibility={this.setRightPossibility} blackListRight={this.blackListRight} />
          <div className="col s2">
          </div>
        </div>
@@ -75,7 +101,6 @@ var Left = React.createClass({
     this.props.blackListLeft(possibility);
   },
   render: function() {
-    console.log(this.props.possibility);
      return (
        <div className="left-possibility">
          <div className="col s3 offset-s2 left-possibility">

@@ -13,4 +13,16 @@ class User < ActiveRecord::Base
       new_user.oauth_token_secret = auth_info.credentials.secret
     end
   end
+
+  def black_listed
+    lists.where(list_type: "black")
+  end
+
+  def white_listed
+    lists.where(list_type: "white")
+  end
+
+  def post(idea_id)
+    service.post(idea_id)
+  end
 end

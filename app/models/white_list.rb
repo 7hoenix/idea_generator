@@ -6,7 +6,7 @@ class WhiteList < Global::WhiteList
   end
 
   def white_list
-    @white_list ||= super + ["sugary"]
+    @white_list ||= super + finder.white_listed
   end
 
   def prepare
