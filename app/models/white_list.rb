@@ -10,9 +10,8 @@ class WhiteList < Global::WhiteList
   end
 
   def prepare
-    raw = finder.raw_possibilities
     white_listed_possibilities = {}
-    raw.each do |source, content|
+    finder.raw_possibilities.each do |source, content|
       possibles = []
       white_list.each do |white_phrase|
         if content.include?(white_phrase)

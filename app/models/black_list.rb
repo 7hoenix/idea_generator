@@ -10,9 +10,8 @@ class BlackList < Global::BlackList
   end
 
   def prepare
-    raw = finder.raw_possibilities
     post_black_list = {}
-    raw.each do |source, content|
+    finder.raw_possibilities.each do |source, content|
       temp = content.pop.split(" ")
       content = content + (temp.uniq - black_list)
       post_black_list[source] = content
