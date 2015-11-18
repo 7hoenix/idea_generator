@@ -14,6 +14,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def black_listed
+    lists.where(list_type: "black")
+  end
+
+  def white_listed
+    lists.where(list_type: "white")
+  end
+
   def post(idea_id)
     service.post(idea_id)
   end
