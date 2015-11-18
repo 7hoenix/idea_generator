@@ -1,8 +1,10 @@
 class PossibilityFinder
-  attr_reader :idea_type
+  attr_reader :idea_type,
+              :current_user
 
-  def initialize(idea_type)
+  def initialize(idea_type, current_user)
     @idea_type = idea_type
+    @current_user = current_user if current_user
   end
 
   def possibilities
@@ -19,6 +21,14 @@ class PossibilityFinder
         @raw_possibilities.each_value { |content| content.downcase! }
       end
     end
+  end
+
+  def black_listed
+    current_user.try!(:black_listed) || []
+  end
+
+  def white_listed
+    current_user.try!(:white_listed) || []
   end
 
   private
