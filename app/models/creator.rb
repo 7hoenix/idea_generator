@@ -7,7 +7,7 @@ class Creator
 
   def prepare
     possibles = []
-    finder.raw_content.each do |source, content|
+    finder.raw_possibilities.each do |source, content|
       content.each do |phrase|
         possibles << Possibility.find_or_create_by(source: source, title: phrase)
       end
