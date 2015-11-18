@@ -52,10 +52,7 @@ var Profile = React.createClass({
              <th>Trash it</th>
            </tr>
          </thead>
-
-         <tbody>
-            <Ideas ideas={this.state.currentIdeas} getIdeaPossibilities={this.ideaPossibilities} tweetIdea={this.onTweetIdea} />
-          </tbody>
+          <Ideas ideas={this.state.currentIdeas} getIdeaPossibilities={this.ideaPossibilities} tweetIdea={this.onTweetIdea} />
          </table>
        </div>
 
@@ -118,9 +115,9 @@ var Ideas = React.createClass({
     }.bind(this));
 
     return (
-      <div className="ideas">
+      <tbody className="ideas">
         {ideas}
-      </div>
+      </tbody>
     )
   }
 });
