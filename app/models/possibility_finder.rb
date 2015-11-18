@@ -1,26 +1,16 @@
 class PossibilityFinder
   attr_reader :idea_type,
               :current_user
+  attr_accessor :raw_possibilities
 
   def initialize(idea_type, current_user)
     @idea_type = idea_type
     @current_user = current_user if current_user
+    @raw_possibilities ||= get_raw_content
   end
 
   def possibilities
     prepare_all
-  end
-
-  def raw_possibilities
-    if @raw_possibilities
-      @raw_possibilities
-    else
-      @raw_possibilities = {}
-      services.each do |service|
-        @raw_possibilities = @raw_possibilities.merge(service.raw_possibilities)
-        @raw_possibilities.each_value { |content| content.downcase! }
-      end
-    end
   end
 
   def black_listed
@@ -37,11 +27,19 @@ class PossibilityFinder
     ServicesFinder.new(idea_type).services
   end
 
+  def get_raw_content
+    raw_content = {}
+    services.each do |service|
+      raw_content = raw_content.merge(service.raw_possibilities)
+      raw_content.each_value { |content| content.downcase! }
+    end
+    raw_content
+  end
+
   def prepare_all
-    raw_possibilities
     [WhiteList, BlackList, Creator].each do |worker|
       @raw_possibilities = worker.new(self).prepare
     end
-    @raw_possibilities.shuffle
+    raw_possibilities.shuffle
   end
 end
