@@ -6,7 +6,7 @@ class BlackList < Global::BlackList
   end
 
   def black_list
-    @black_list ||= super + ["cakey"]
+    @black_list ||= super + finder.black_listed
   end
 
   def prepare
