@@ -7,8 +7,8 @@ RSpec.describe Services::ProductHuntService, vcr: true do
 
       collection = product_hunt.raw_possibilities
 
-      expect(collection.keys.first).to eq("https://www.producthunt.com/tech/super-3")
-      expect(collection.values.first).to eq("Home ownership, reinvented")
+      expect(collection.keys.first).to eq("https://www.producthunt.com/tech/ucella-2")
+      expect(collection.values.first).to eq("The smartest package & delivery mailbox")
     end
   end
 end
