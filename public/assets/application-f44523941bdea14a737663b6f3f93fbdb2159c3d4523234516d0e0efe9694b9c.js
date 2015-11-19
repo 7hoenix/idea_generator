@@ -36828,6 +36828,82 @@ module.exports = warning;
     handleNativeEvents();
   }
 })(document, window);
+var Confirm = React.createClass({
+  displayName: "Confirm",
+
+  getInitialState: function () {
+    return { possibilities: [] };
+  },
+  componentDidMount: function () {
+    this.getPossibilities();
+  },
+  getPossibilities: function () {
+    $.ajax({
+      url: "/api/v1/current_idea.json",
+      type: "GET",
+      success: (function (response) {
+        this.setState({ possibilities: response });
+      }).bind(this)
+    });
+  },
+  saveIdea: function () {
+    $.ajax({
+      url: "/api/v1/ideas.json",
+      type: "POST",
+      data: { idea: { possibility_alpha_id: this.state.possibilities[0].id, possibility_beta_id: this.state.possibilities[1].id } },
+      success: (function (response) {
+        if (response === true) {
+          window.location.replace("/profile");
+        }
+      }).bind(this)
+    });
+  },
+  render: function () {
+    return React.createElement(
+      "div",
+      { className: "section" },
+      React.createElement(
+        "div",
+        { className: "row center dashboard-card-vertical" },
+        React.createElement(
+          "h3",
+          null,
+          "Your current idea is:"
+        ),
+        React.createElement(
+          "table",
+          { className: "highlight centered" },
+          React.createElement(
+            "tr",
+            { className: "center-text" },
+            this.state.possibilities.map(function (possibility, index) {
+              return React.createElement(
+                "td",
+                { className: "possibility", key: "possibility-" + index },
+                possibility.title
+              );
+            })
+          )
+        ),
+        React.createElement(
+          "button",
+          { className: "waves-effect waves-light light-blue btn",
+            onClick: this.saveIdea
+          },
+          React.createElement(
+            "i",
+            { className: "material-icons left"
+            },
+            "done "
+          ),
+          "Save Idea"
+        ),
+        React.createElement("div", { className: "col s2" })
+      ),
+      React.createElement("br", null)
+    );
+  }
+});
 var Dashboard = React.createClass({
   displayName: "Dashboard",
 
@@ -36844,7 +36920,6 @@ var Dashboard = React.createClass({
     return possibility;
   },
   setLeftPossibility: function () {
-    console.log("I'm back to the truth");
     this.setState({ left: this.nextPossibility() });
   },
   setRightPossibility: function () {
@@ -36862,6 +36937,95 @@ var Dashboard = React.createClass({
       }).bind(this)
     });
   },
+  blackListLeft: function (possibility_id) {
+    this.blackList(possibility_id);
+    this.setLeftPossibility();
+  },
+  blackListRight: function (possibility_id) {
+    this.blackList(possibility_id);
+    this.setRightPossibility();
+  },
+  blackList: function (possibility_id) {
+    console.log(possibility_id);
+    $.ajax({
+      url: "/api/v1/lists.json",
+      type: "POST",
+      data: { possibility: { possibility_id: possibility_id, type: "black" } },
+      success: (function (response) {
+        console.log("cake");
+      }).bind(this)
+    });
+  },
+  leftSpinner: function () {
+    React.createElement(
+      "div",
+      { className: "preloader-wrapper big active" },
+      React.createElement(
+        "div",
+        { className: "spinner-layer spinner-blue-only" },
+        React.createElement(
+          "div",
+          { className: "circle-clipper left" },
+          React.createElement("div", { className: "circle" })
+        ),
+        React.createElement(
+          "div",
+          { className: "gap-patch" },
+          React.createElement("div", { className: "circle" })
+        ),
+        React.createElement(
+          "div",
+          { className: "circle-clipper right" },
+          React.createElement("div", { className: "circle" })
+        )
+      )
+    );
+  },
+  rightSpinner: function () {
+    React.createElement(
+      "div",
+      { className: "preloader-wrapper big active" },
+      React.createElement(
+        "div",
+        { className: "spinner-layer spinner-blue-only" },
+        React.createElement(
+          "div",
+          { className: "circle-clipper left" },
+          React.createElement("div", { className: "circle" })
+        ),
+        React.createElement(
+          "div",
+          { className: "gap-patch" },
+          React.createElement("div", { className: "circle" })
+        ),
+        React.createElement(
+          "div",
+          { className: "circle-clipper right" },
+          React.createElement("div", { className: "circle" })
+        )
+      )
+    );
+  },
+  saveOrLogin: function () {
+    this.saveIdea();
+  },
+  saveIdea: function () {
+    $.ajax({
+      url: "/api/v1/ideas.json",
+      type: "POST",
+      data: { idea: { possibility_alpha_id: this.state.left.id, possibility_beta_id: this.state.right.id } },
+      success: (function (response) {
+        if (response === true) {
+          window.location.replace("/profile");
+        }
+      }).bind(this),
+      error: function (response) {
+        window.location.replace("/auth/twitter");
+        console.log(response);
+        console.log("could not login");
+      }
+    });
+  },
   render: function () {
     return React.createElement(
       "div",
@@ -36869,12 +37033,12 @@ var Dashboard = React.createClass({
       React.createElement(
         "div",
         { className: "row center dashboard-card-vertical" },
-        React.createElement(Left, { possibility: this.state.left, setLeftPossibility: this.setLeftPossibility }),
-        React.createElement(Right, { possibility: this.state.right, setRightPossibility: this.setRightPossibility }),
+        React.createElement(Left, { possibility: this.state.left, leftSpinner: this.state.leftSpinner, setLeftPossibility: this.setLeftPossibility, blackListLeft: this.blackListLeft }),
+        React.createElement(Right, { possibility: this.state.right, rightSpinner: this.state.rightSpinner, setRightPossibility: this.setRightPossibility, blackListRight: this.blackListRight }),
         React.createElement("div", { className: "col s2" })
       ),
       React.createElement("br", null),
-      React.createElement(Composite, { left: this.state.left, right: this.state.right, startOver: this.setBothPossibilities })
+      React.createElement(Composite, { left: this.state.left, right: this.state.right, startOver: this.setBothPossibilities, saveOrLogin: this.saveOrLogin })
     );
   }
 });
@@ -36885,8 +37049,13 @@ var Left = React.createClass({
   handleChangeLeft: function () {
     this.props.setLeftPossibility();
   },
+  handleBlackListLeft: function (event) {
+    event.preventDefault();
+    var possibility = React.findDOMNode(this.refs.possibilityTitle).id;
+
+    this.props.blackListLeft(possibility);
+  },
   render: function () {
-    console.log(this.props.possibility);
     return React.createElement(
       "div",
       { className: "left-possibility" },
@@ -36898,7 +37067,7 @@ var Left = React.createClass({
           { className: "card-content white-text" },
           React.createElement(
             "h3",
-            null,
+            { ref: "possibilityTitle", id: this.props.possibility.id },
             this.props.possibility.title
           ),
           React.createElement(
@@ -36924,12 +37093,17 @@ var Left = React.createClass({
             "New possibility"
           ),
           React.createElement(
-            "a",
-            { className: "waves-effect waves-light light-blue btn" },
+            "button",
+            { className: "waves-effect waves-light light-blue btn",
+              id: "black-list-left",
+              onClick: this.handleBlackListLeft,
+              value: this.props.possibility
+            },
             React.createElement(
               "i",
-              { className: "material-icons left" },
-              "thumb_down"
+              { className: "material-icons left"
+              },
+              " thumb_down"
             ),
             "Blacklist"
           )
@@ -36945,6 +37119,12 @@ var Right = React.createClass({
   handleChangeRight: function () {
     this.props.setRightPossibility();
   },
+  handleBlackListRight: function (event) {
+    event.preventDefault();
+    var possibility = React.findDOMNode(this.refs.possibilityTitle).id;
+
+    this.props.blackListRight(possibility);
+  },
   render: function () {
     return React.createElement(
       "div",
@@ -36957,7 +37137,7 @@ var Right = React.createClass({
           { className: "card-content white-text" },
           React.createElement(
             "h3",
-            null,
+            { ref: "possibilityTitle", id: this.props.possibility.id },
             this.props.possibility.title
           ),
           React.createElement(
@@ -36974,7 +37154,9 @@ var Right = React.createClass({
             "button",
             { className: "waves-effect waves-light light-blue btn dashboard-possibility-button",
               id: "new-possibility-right",
-              onClick: this.handleChangeRight },
+              onClick: this.handleChangeRight,
+              value: this.props.possibility
+            },
             React.createElement(
               "i",
               { className: "material-icons left" },
@@ -36983,8 +37165,10 @@ var Right = React.createClass({
             "New possibility"
           ),
           React.createElement(
-            "a",
-            { className: "waves-effect waves-light light-blue btn" },
+            "button",
+            { className: "waves-effect waves-light light-blue btn",
+              id: "black-list-right",
+              onClick: this.handleBlackListRight },
             React.createElement(
               "i",
               { className: "material-icons left" },
@@ -37003,6 +37187,9 @@ var Composite = React.createClass({
 
   handleChangeBothPossibilities: function () {
     this.props.startOver();
+  },
+  handleSaveLoginButton: function () {
+    this.props.saveOrLogin();
   },
   render: function () {
     return React.createElement(
@@ -37039,8 +37226,10 @@ var Composite = React.createClass({
           "Try again"
         ),
         React.createElement(
-          "a",
-          { className: "waves-effect waves-light light-blue btn" },
+          "button",
+          { className: "waves-effect waves-light light-blue btn",
+            onClick: this.handleSaveLoginButton
+          },
           React.createElement(
             "i",
             { className: "material-icons left" },
@@ -37058,6 +37247,244 @@ var Composite = React.createClass({
       React.createElement("br", null),
       React.createElement("br", null),
       React.createElement("br", null)
+    );
+  }
+});
+var Landing = React.createClass({
+  displayName: "Landing",
+
+  getInitialState: function () {
+    return { left: [] };
+  },
+  optionSubmit: function (ideaType) {
+    console.log(ideaType);
+  },
+  render: function () {
+    return React.createElement(
+      "div",
+      { className: "section no-pad-bot", id: "index-banner" },
+      React.createElement(
+        "div",
+        { className: "container" },
+        React.createElement("div", { className: "section" }),
+        React.createElement("div", { className: "section" }),
+        React.createElement("br", null),
+        React.createElement("br", null),
+        React.createElement(
+          "h1",
+          { className: "header center orange-text" },
+          "Need a little inspiration?"
+        ),
+        React.createElement(
+          "div",
+          { className: "row" },
+          React.createElement(OptionSelect, { optionSubmit: this.optionSubmit }),
+          React.createElement("div", { className: "col s2" })
+        )
+      )
+    );
+  }
+});
+
+var OptionSelect = React.createClass({
+  displayName: "OptionSelect",
+
+  handleOptionSubmit: function () {
+    // check if they have selected a choice...
+    window.location.replace("/dashboard?idea_type=" + $("input.select-dropdown").val());
+  },
+  render: function () {
+    return React.createElement(
+      "div",
+      { className: "big-div" },
+      React.createElement(
+        "div",
+        { className: "input-field offset-s2 col s8" },
+        React.createElement(
+          "select",
+          null,
+          React.createElement(
+            "option",
+            { value: "", disabled: true, selected: true },
+            "Choose a category to get started"
+          ),
+          React.createElement(
+            "option",
+            { value: "business" },
+            "Business idea"
+          ),
+          React.createElement(
+            "option",
+            { value: "product" },
+            "Product idea"
+          )
+        ),
+        React.createElement(
+          "label",
+          null,
+          "We pull ideas from top trending websites and mash them together."
+        ),
+        React.createElement(
+          "button",
+          { className: "btn waves-effect waves-light",
+            onClick: this.handleOptionSubmit,
+            value: $("input.select-dropdown").val(),
+            name: "action" },
+          "Go",
+          React.createElement(
+            "i",
+            { className: "material-icons right" },
+            "send"
+          )
+        )
+      )
+    );
+  }
+});
+var Profile = React.createClass({
+  displayName: "Profile",
+
+  getInitialState: function () {
+    return { currentIdeas: [], ideaPossibilities: [] };
+  },
+  componentDidMount: function () {
+    $.ajax({
+      url: "/api/v1/ideas.json",
+      type: "GET",
+      success: (function (response) {
+        this.setState({ currentIdeas: response });
+      }).bind(this)
+    });
+  },
+  onTweetIdea: function (id) {
+    $.ajax({
+      url: "/api/v1/ideas/" + id + "/tweets.json",
+      type: "POST",
+      success: (function (response) {
+        console.log("You just tweeted!");
+      }).bind(this)
+    });
+  },
+  onDeleteIdea: function (id) {
+    var ideas = this.state.currentIdeas.filter(function (idea) {
+      return idea.id != id;
+    });
+
+    $.ajax({
+      url: "/api/v1/ideas/" + id,
+      type: "DELETE",
+      success: (function (response) {
+        this.setState({ currentIdeas: ideas });
+      }).bind(this)
+    });
+  },
+  render: function () {
+    return React.createElement(
+      "div",
+      { className: "jsx-one-time" },
+      React.createElement(
+        "table",
+        { className: "highlight centered" },
+        React.createElement(
+          "thead",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "th",
+              null,
+              "Idea"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Get feedback from followers"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Source 1"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Source 2"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "Trash it"
+            )
+          )
+        ),
+        React.createElement(Ideas, { ideas: this.state.currentIdeas, tweetIdea: this.onTweetIdea, deleteIdea: this.onDeleteIdea })
+      )
+    );
+  }
+});
+
+var Ideas = React.createClass({
+  displayName: "Ideas",
+
+  handleTweetIdea: function (event) {
+    this.props.tweetIdea(event.target.value);
+  },
+  handleDeleteIdea: function (event) {
+    this.props.deleteIdea(event.target.value);
+  },
+  render: function () {
+    var ideas = this.props.ideas.map((function (idea, index) {
+      return React.createElement(
+        "tr",
+        { className: "idea", key: "idea-" + index },
+        React.createElement(
+          "td",
+          null,
+          idea.composite
+        ),
+        React.createElement(
+          "td",
+          null,
+          React.createElement(
+            "button",
+            { className: "waves-effect waves-light btn",
+              onClick: this.handleTweetIdea,
+              value: idea.id
+            },
+            "Tweet it"
+          )
+        ),
+        idea.possibilities.map(function (possibility, index) {
+          return React.createElement(
+            "td",
+            { className: "possibility-one-time", key: "possibility-" + index },
+            possibility.title
+          );
+        }),
+        React.createElement(
+          "td",
+          null,
+          React.createElement(
+            "button",
+            { className: "waves-effect waves-light btn",
+              onClick: this.handleDeleteIdea,
+              value: idea.id
+            },
+            React.createElement(
+              "i",
+              { className: "material-icons" },
+              "delete"
+            )
+          )
+        )
+      );
+    }).bind(this));
+
+    return React.createElement(
+      "tbody",
+      { className: "ideas" },
+      ideas
     );
   }
 });

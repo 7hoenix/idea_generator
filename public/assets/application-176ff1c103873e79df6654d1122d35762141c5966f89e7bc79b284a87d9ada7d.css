@@ -15339,14 +15339,22 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-bottom: 5em;
   }
 }
-/* line 1, /Users/jphoenix/Dropbox/turing/3module/projects/personal/idea_generator/app/assets/stylesheets/style.scss */
-#footer {
-  background: #ffab62;
-  width: 100%;
-  height: 46px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+/*#footer {*/
+/*background:#ffab62;*/
+/*width:100%;*/
+/*height: 46px;*/
+/*position:absolute;*/
+/*bottom:0;*/
+/*left:0;*/
+/*}*/
+/* line 9, /Users/jphoenix/Dropbox/turing/3module/projects/personal/idea_generator/app/assets/stylesheets/style.scss */
+.possibility {
+  font-size: 4em;
+}
+
+/* line 13, /Users/jphoenix/Dropbox/turing/3module/projects/personal/idea_generator/app/assets/stylesheets/style.scss */
+.center-text {
+  text-align: center;
 }
 
 /* line 13, /Users/jphoenix/Dropbox/turing/3module/projects/personal/idea_generator/app/assets/stylesheets/application.scss */
@@ -15389,4 +15397,16 @@ body {
 .responsive_headline {
   width: 100px;
   height: 50px;
+}
+
+/* line 47, /Users/jphoenix/Dropbox/turing/3module/projects/personal/idea_generator/app/assets/stylesheets/application.scss */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* line 53, /Users/jphoenix/Dropbox/turing/3module/projects/personal/idea_generator/app/assets/stylesheets/application.scss */
+main {
+  flex: 1 0 auto;
 }
