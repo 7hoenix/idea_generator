@@ -24,7 +24,7 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def current
-    possibility_ids = session.fetch(:idea_params)
+    possibility_ids = session[:idea_params]
     possibilities = possibility_ids.map { |_, possibility_id| Possibility.find(possibility_id) }
     session.delete(:idea_params)
     respond_with possibilities

@@ -8,7 +8,7 @@ RSpec.describe Api::V1::PossibilitiesController, vcr: true do
       get :index, idea_type: "business", format: :json
 
       expect(response).to have_http_status(:ok)
-      expect(json.count).to eq(424)
+      expect(json.count).to eq(400)
     end
   end
 end

@@ -1,15 +1,18 @@
 require "rails_helper"
 
-RSpec.describe PossibilityFinder, type: :model do
+RSpec.describe PossibilityFinder, type: :model, vcr: true do
   describe "#possibilities" do
-    xit "returns a listing of possibilities" do
-      possibility1 = create(:possibility, title: "wonder")
-      possibility2 = create(:possibility, title: "woman")
-      possibilities = [possibility1, possibility2]
+    it "returns a listing of possibilities" do
+      user = create(:user)
+      create(:possibility)
+      create(:possibility)
+      create(:black_list, user_id: user.id)
+      create(:white_list, user_id: user.id)
+      Rails.cache.clear
 
-      finder = PossibilityFinder.new("business")
+      finder = PossibilityFinder.new("business", user)
 
-      expect(finder.possibilities.first.title).to eq(possibilities.first.title)
+      expect(finder.possibilities).to eq(384)
     end
   end
 end

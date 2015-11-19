@@ -19,6 +19,7 @@ gem 'figaro'
 gem 'hurley'
 gem 'omniauth-twitter'
 gem 'twitter'
+gem 'rails_12factor'
 
 group :development, :test do
   gem 'pry-rails'

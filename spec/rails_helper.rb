@@ -18,10 +18,41 @@ VCR.configure do |config|
   config.cassette_library_dir = "spec/cassettes"
   config.hook_into :webmock
   config.configure_rspec_metadata!
+  config.filter_sensitive_data("<twitter_api_key>") { ENV["TWITTER_API_KEY"] }
+  config.filter_sensitive_data("<twitter_secret>") { ENV["TWITTER_API_SECRET"] }
+  config.filter_sensitive_data("<twitter_user_token>") { ENV["twitter_user_token"] }
+  config.filter_sensitive_data("<twitter_user_secret>") { ENV["twitter_user_secret"] }
 end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+  def stub_omniauth
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
+      uid: "1234",
+      provider: "twitter",
+      info: {
+        image: "cake"
+      },
+      extra: {
+        raw_info: {
+          user_id: "1234",
+          name: "Justin",
+          screen_name: "Justin Holzmann",
+          profile_banner_url: "cake"
+        }
+      },
+      credentials: {
+        token: ENV["twitter_user_token"],
+        secret: ENV["twitter_user_secret"]
+      }
+    })
+  end
+
+  config.include Capybara::DSL, type: :feature
+  Capybara.app = IdeaGenerator::Application
+  stub_omniauth
 
   config.include FactoryGirl::Syntax::Methods
 
