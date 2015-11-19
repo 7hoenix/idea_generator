@@ -11,4 +11,9 @@ RSpec.describe Api::V1::IdeasController, type: :controller do
       expect(response).to have_http_status(:ok)
     end
   end
+
+  describe "POST create" do
+    it "creates a new idea for that user" do
+    end
+  end
 end
