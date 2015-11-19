@@ -28,7 +28,8 @@ var Landing = React.createClass({
 
 var OptionSelect = React.createClass({
   handleOptionSubmit: function() {
-    window.location.replace("/dashboard");
+    // check if they have selected a choice...
+    window.location.replace("/dashboard?idea_type=" + $("input.select-dropdown").val());
   },
   render: function() {
      return (

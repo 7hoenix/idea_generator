@@ -12,4 +12,7 @@ class SiteController < ApplicationController
   def profile
     @ideas = [["water chestnuts"], ["Christmas present"], ["inner city water"]]
   end
+
+  def confirm
+  end
 end

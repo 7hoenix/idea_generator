@@ -74,6 +74,26 @@ var Dashboard = React.createClass({
      </div>
     </div>
   },
+  saveOrLogin: function() {
+    this.saveIdea();
+  },
+  saveIdea: function() {
+    $.ajax({
+      url: "/api/v1/ideas.json",
+      type: "POST",
+      data: { idea: {possibility_alpha_id: this.state.left.id, possibility_beta_id: this.state.right.id} },
+      success: function(response) {
+        if (response === true){
+          window.location.replace("/profile");
+        }
+      }.bind(this),
+      error: function(response) {
+        window.location.replace("/auth/twitter");
+        console.log(response);
+        console.log("could not login");
+      }
+    });
+  },
   render: function() {
     return (
       <div className="section" id="dashboard-body">
@@ -84,7 +104,7 @@ var Dashboard = React.createClass({
          </div>
        </div>
        <br/>
-        <Composite left={this.state.left} right={this.state.right} startOver={this.setBothPossibilities} />
+        <Composite left={this.state.left} right={this.state.right} startOver={this.setBothPossibilities} saveOrLogin={this.saveOrLogin} />
       </div>
     )
   }
@@ -176,6 +196,9 @@ var Composite = React.createClass({
   handleChangeBothPossibilities: function() {
     this.props.startOver();
   },
+  handleSaveLoginButton: function() {
+    this.props.saveOrLogin();
+  },
   render: function() {
     return (
     <div className="composite">
@@ -193,7 +216,14 @@ var Composite = React.createClass({
                   replay
                   </i>Try again
           </button>
-          <a href="/auth/twitter" className="waves-effect waves-light light-blue btn"><i className="material-icons left">done</i>Save Idea</a>
+          <button className="waves-effect waves-light light-blue btn"
+                  onClick={this.handleSaveLoginButton}
+              >
+                <i className="material-icons left">
+                done
+                </i>
+                Save Idea
+          </button>
         </div>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/>
       </div>
