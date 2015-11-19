@@ -1,6 +1,6 @@
 var Profile = React.createClass({
   getInitialState: function() {
-    return { currentIdeas: [] }
+    return { currentIdeas: [], ideaPossibilities: [] }
   },
   componentDidMount: function() {
     $.ajax({
@@ -20,28 +20,10 @@ var Profile = React.createClass({
        console.log("cake is good");
       }.bind(this)
     });
-    console.log("in tweet idea TOP level")
-    console.log(id)
   },
   render: function() {
     return (
       <div className="jsx-one-time">
-        <h4 className="header center orange-text">Need a little inspiration?</h4>
-        <div className="row">
-            <div className="input-field offset-s4 col s4">
-               <select>
-                 <option value="" disabled selected>Choose a category to get started</option>
-                 <option value="business">Business idea</option>
-                 <option value="product">Product idea</option>
-               </select>
-               <button className="btn waves-effect waves-light" type="submit" name="action">Go
-                 <i className="material-icons right">send</i>
-                </button>
-           </div>
-           <div className="col s4">
-           </div>
-        </div>
-
         <table className="highlight centered">
          <thead>
            <tr>
@@ -52,54 +34,22 @@ var Profile = React.createClass({
              <th>Trash it</th>
            </tr>
          </thead>
-          <Ideas ideas={this.state.currentIdeas} getIdeaPossibilities={this.ideaPossibilities} tweetIdea={this.onTweetIdea} />
+          <Ideas ideas={this.state.currentIdeas} tweetIdea={this.onTweetIdea} />
          </table>
        </div>
-
     )
   }
 });
 
 var Ideas = React.createClass({
   handleTweetIdea: function(event) {
-    console.log(event)
     this.props.tweetIdea(event.target.value);
   },
-  renderIdeaPossibilities: function(id) {
-    $.ajax({
-      url: "/api/v1/ideas/" + id + "/possibilities",
-      type: "GET",
-      success: function(response) {
-        <div className="idea" key={"idea-" + id}>
-         <tbody>
-           <tr>
-             <td>{idea.id}</td>
-             <td><button className="waves-effect waves-light btn"
-                          onClick={this.handleTweetIdea}
-                          value={idea.id}
-                          >
-                          Tweet it
-                  </button>
-             </td>
-              {response.map(function(possibility, index) {
-                <div className="possibility" key={index}>
-                   <td>{possibility.title}</td>
-                 </div>
-                })
-              }
-             <td><a className="material-icons">delete</a></td>
-           </tr>
-         </tbody>
-        </div>
-      }
-    });
-  },
-
   render: function() {
     var ideas = this.props.ideas.map(function(idea, index) {
       return (
          <tr className="idea" key={"idea-" + index}>
-           <td>my big idea</td>
+           <td>{idea.composite}</td>
            <td><button className="waves-effect waves-light btn"
                         onClick={this.handleTweetIdea}
                         value={idea.id}
@@ -107,8 +57,14 @@ var Ideas = React.createClass({
                         Tweet it
                 </button>
            </td>
-                 <td>source 1</td>
-                 <td>source 2</td>
+           {idea.possibilities.map(function(possibility, index){
+             return (
+              <td className="possibility-one-time" key={"possibility-" + index}>
+                {possibility.title}
+              </td>
+             )
+           })
+         }
            <td><a className="material-icons">delete</a></td>
          </tr>
       )
