@@ -1,7 +1,8 @@
 <nav class="nav" role="navigation">
-  <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Iderator</a>
+  <div class="nav-wrapper container"><%= link_to "Iderator", root_path, id:"logo-container", class:"brand-logo" %>
     <ul class="right hide-on-med-and-down">
       <% if current_user %>
+        <li><%= link_to "Welcome " + current_user.name, profile_path %></li>
         <li><%= link_to "Logout", logout_path %></li>
       <% else %>
         <li><%= link_to "Login with Twitter", login_path %></li>
