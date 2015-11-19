@@ -12,12 +12,24 @@ var Profile = React.createClass({
     });
   },
   onTweetIdea: function(id) {
-    console.log("here")
     $.ajax({
       url: "/api/v1/ideas/" + id + "/tweets.json",
       type: "POST",
       success: function(response) {
-       console.log("cake is good");
+       console.log("You just tweeted!");
+      }.bind(this)
+    });
+  },
+  onDeleteIdea: function(id) {
+    var ideas = this.state.currentIdeas.filter(function(idea) {
+      return idea.id != id;
+    });
+
+    $.ajax({
+      url: "/api/v1/ideas/" + id,
+      type: "DELETE",
+      success: function(response) {
+        this.setState({currentIdeas: ideas})
       }.bind(this)
     });
   },
@@ -34,7 +46,7 @@ var Profile = React.createClass({
              <th>Trash it</th>
            </tr>
          </thead>
-          <Ideas ideas={this.state.currentIdeas} tweetIdea={this.onTweetIdea} />
+          <Ideas ideas={this.state.currentIdeas} tweetIdea={this.onTweetIdea} deleteIdea={this.onDeleteIdea} />
          </table>
        </div>
     )
@@ -44,6 +56,9 @@ var Profile = React.createClass({
 var Ideas = React.createClass({
   handleTweetIdea: function(event) {
     this.props.tweetIdea(event.target.value);
+  },
+  handleDeleteIdea: function(event) {
+    this.props.deleteIdea(event.target.value);
   },
   render: function() {
     var ideas = this.props.ideas.map(function(idea, index) {
@@ -65,7 +80,13 @@ var Ideas = React.createClass({
              )
            })
          }
-           <td><a className="material-icons">delete</a></td>
+           <td><button className="waves-effect waves-light btn"
+                        onClick={this.handleDeleteIdea}
+                        value={idea.id}
+                      >
+                  <i className="material-icons">delete</i>
+                </button>
+          </td>
          </tr>
       )
     }.bind(this));

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       resources :users, only: [:show]
       resources :possibilities, only: [:index]
       resources :lists, only: [:create]
-      resources :ideas, only: [:create, :index] do
+      resources :ideas, only: [:create, :index, :destroy] do
         resources :tweets, only: [:create], module: "ideas"
         resources :possibilities, only: [:index], module: "ideas"
       end

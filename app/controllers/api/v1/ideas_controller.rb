@@ -18,6 +18,11 @@ class Api::V1::IdeasController < ApplicationController
     end
   end
 
+  def destroy
+    Idea.delete(params[:id])
+    render json: true
+  end
+
   def current
     possibility_ids = session.fetch(:idea_params)
     possibilities = possibility_ids.map { |_, possibility_id| Possibility.find(possibility_id) }
