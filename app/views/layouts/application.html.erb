@@ -11,12 +11,11 @@
 
   <%= render "layouts/navbar" %>
 
-  <%= yield %>
+  <main>
+    <%= yield %>
+  </main>
 
-  <div id="footer">
-    <%= render "layouts/footer" %>
-  </div>
-  <%#<script src="jquery.textfill.min.js"></script>%>
+  <%= render "layouts/footer" %>
 
 </body>
 
