@@ -28,18 +28,22 @@ class PossibilityFinder
   end
 
   def get_raw_content
-    raw_content = {}
-    services.each do |service|
-      raw_content = raw_content.merge(service.raw_possibilities)
-      raw_content.each_value { |content| content.downcase! }
+    Rails.cache.fetch("raw_content", expires_in: 24.hours) do
+      raw_content = {}
+      services.each do |service|
+        raw_content = raw_content.merge(service.raw_possibilities)
+        raw_content.each_value { |content| content.downcase! }
+      end
+      raw_content
     end
-    raw_content
   end
 
   def prepare_all
-    [WhiteList, BlackList, Creator].each do |worker|
-      @raw_possibilities = worker.new(self).prepare
+    Rails.cache.fetch("prepared_content", expires_in: 24.hours) do
+      [WhiteList, BlackList, Creator].each do |worker|
+        @raw_possibilities = worker.new(self).prepare
+      end
+      raw_possibilities.shuffle
     end
-    raw_possibilities.shuffle
   end
 end
