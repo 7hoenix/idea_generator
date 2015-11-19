@@ -20,6 +20,7 @@ gem 'hurley'
 gem 'omniauth-twitter'
 gem 'twitter'
 gem 'rails_12factor'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'pry-rails'
