@@ -16,3 +16,6 @@
 /config/application.yml
 
 /spec/cassettes/*
+
+# Ignore generated assets
+public/assets/application-*
