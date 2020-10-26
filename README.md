@@ -1,5 +1,3 @@
-== README
-
 # An Idea Generator for when you are stuck.
 
 Referenced as the use-case in [this blog post](https://medium.com/@JustinHolzmann/creating-flexible-interfaces-5eb0c6c447fc).
