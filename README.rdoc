@@ -1,28 +1,17 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# An Idea Generator for when you are stuck.
 
-Things you may want to cover:
+Referenced as the use-case in [this blog post](https://medium.com/@JustinHolzmann/creating-flexible-interfaces-5eb0c6c447fc).
 
-* Ruby version
+It hits n-number of API's and then parses the results into human understandable ideas which it then presents two at a time to the user.
 
-* System dependencies
+## USAGE
 
-* Configuration
+TODO
 
-* Database creation
+## NOTE
 
-* Database initialization
+The deployed code is 5 years old and no longer works (presumably Twitter changed how they do auth in that time?):
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+https://iderator.herokuapp.com/
