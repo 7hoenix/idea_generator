@@ -10,6 +10,6 @@ TODO
 
 ## NOTE
 
-The deployed code is 5 years old and no longer works (presumably Twitter changed how they do auth in that time?):
+The deployed code is 5 years old and [no longer works](https://github.com/7hoenix/idea_generator/issues/64) (presumably Twitter changed how they do auth in that time?):
 
 https://iderator.herokuapp.com/
