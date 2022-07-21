@@ -1,11 +1,8 @@
 GIT
-  remote: git://github.com/rails-api/active_model_serializers.git
-  revision: e6d1d6be0c69ca333da90f1e850415739a6abc72
+  remote: https://github.com/rails-api/active_model_serializers.git
+  revision: beeb216fab286537389788349c513264325393ef
   specs:
-    active_model_serializers (0.10.0.rc3)
-      actionpack (>= 4.0)
-      activemodel (>= 4.0)
-      railties (>= 4.0)
+    active_model_serializers (1.0.0.pre.dev)
 
 GEM
   remote: https://rubygems.org/
@@ -274,7 +271,7 @@ GEM
       memoizable (~> 0.4.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    tzinfo (1.2.7)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
       execjs (>= 0.3.0)
